@@ -1,12 +1,14 @@
 import fs from 'fs';
 import pkg from 'aws-sdk';
 import UploadedModel from '../models/model.js';
+import dotenv from "dotenv"
 
+dotenv.config();
 const { S3 } = pkg;
 
 const s3 = new S3({
-  accessKeyId: process.env.ACCESS_KEY_ID,
-  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  accessKeyId: "",
+  secretAccessKey: "",
   region: "us-east-1",
   endpoint: "s3.wasabisys.com",
   signatureVersion: "v4",
