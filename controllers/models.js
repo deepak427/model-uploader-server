@@ -1,21 +1,13 @@
 import fs from 'fs';
 import pkg from 'aws-sdk';
 import UploadedModel from '../models/model.js';
+import  { config } from "../config/config.js"
 import dotenv from "dotenv"
 
 dotenv.config();
 const { S3 } = pkg;
 
-const s3 = new S3({
-  accessKeyId: "",
-  secretAccessKey: "",
-  region: "us-east-1",
-  endpoint: "s3.wasabisys.com",
-  signatureVersion: "v4",
-  httpOptions: {
-    timeout: 3600000, 
-  },
-});
+const s3 = new S3(config);
 
 export const uploadModel = async (req, res) => {
   try {
@@ -61,7 +53,14 @@ export const getModels = async (req, res) => {
         Key: file.originalName,
         Expires: 3600, 
       });
-      return presignedUrl;
+
+      const modelObj = {
+        title: file.title,
+        description: file.description,
+        url: presignedUrl
+      }
+      
+      return modelObj;
     });
     res.status(200).json(modelUrls);
   } catch (error) {
